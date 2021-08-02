@@ -1,0 +1,62 @@
+#!/usr/bin/env python
+
+import sys
+import os
+import math
+from termcolor import colored
+
+if len(sys.argv) > 1:
+    trunc = int(sys.argv[1])
+else:
+    trunc = 7
+
+def birthday(people,days):
+    """The chance of a number of people sharing a birthday
+    in a year with a certian number of days."""
+    return 1- math.prod([days - i for i in range(0,people)]) / ( days ** people )
+
+def birthday50(days):
+    for i in  range(1,days):
+        if (i ** 2) - i > 2 * days * math.log(2):
+            break
+    return i
+
+def max_hashes(trunc):
+    return 16 ** trunc
+
+commits = os.popen('git log --pretty=format:"%H %aI %s"').read().split("\n")
+hashes = [s.split()[0] for s in commits]
+dates =  [s.split()[1] for s in commits]
+subject =  [s.split(" ", 2)[2] for s in commits]
+
+trunc_hashes = [s[0:trunc] for s in hashes]
+
+dict_hashes = {}
+for h in enumerate(trunc_hashes):
+    if h[1] not in dict_hashes:
+        dict_hashes[h[1]]=[h[0]]
+    else:
+        dict_hashes[h[1]].append(h[0])
+
+dict_duplicates = dict(filter(lambda elem: len(elem[1]) > 1,dict_hashes.items()))
+
+def printmatch(string,length):
+    print(colored(string[0:length], "red") , string[length:],sep="")
+
+print ("For truncation length", colored(trunc,"red") ,"there are", end=" ")
+if len(dict_duplicates) == 0:
+    print("no commits with the same hash!")
+else:
+    print(len(dict_duplicates), "commits pairs with the same hash! They are:\n")
+    for el in dict_duplicates.items():
+        for idx in el[1]:
+            print("-"*40)
+            print(colored(subject[idx],"blue"))
+            print(colored(dates[idx],"yellow"))
+            printmatch(hashes[idx],trunc)
+        print("-"*40)
+        print("")
+    print("There are", len(dict_duplicates), "collisions in total.")
+print("The probability of a collision happening at least once is", end=" ")
+print(colored("{:.2f}%".format(birthday(len(commits),max_hashes(trunc)) * 100), "green"))
+print("For this probability to reach 50%, you'd need", birthday50(max_hashes(trunc)), "commits.")
