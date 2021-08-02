@@ -47,9 +47,9 @@ def printmatch(string,length):
 
 print ("For truncation length", colored(trunc,"red") ,"there are", end=" ")
 if len(dict_duplicates) == 0:
-    print("no commits with the same hash!")
+    print(colored("no","yellow"),"commits with the same hash!")
 else:
-    print(len(dict_duplicates), "commits pairs with the same hash! They are:\n")
+    print(colored("{:d}".format(len(dict_duplicates)),"cyan"), "commits pairs with the same hash! They are:\n")
     for el in dict_duplicates.items():
         for idx in el[1]:
             print("-"*40)
@@ -61,6 +61,6 @@ else:
     print("There are", len(dict_duplicates), "collisions in total.")
 print("The probability of a collision happening at least once is", end=" ")
 print(colored("{:.2f}%".format(birthday(len(commits),max_hashes(trunc)) * 100), "green"))
-print("For this probability to reach 1%, you'd need",  birthday_threshold(0.01,max_hashes(trunc)), "commits.")
-print("For this probability to reach 10%, you'd need", birthday_threshold(0.1,max_hashes(trunc)), "commits.")
-print("For this probability to reach 50%, you'd need", birthday_threshold(0.5,max_hashes(trunc)), "commits.")
+print("For this probability to reach 1%, you'd need", colored("{:d}".format(birthday_threshold(0.01,max_hashes(trunc))),"cyan"), "commits.")
+print("For this probability to reach 10%, you'd need", colored("{:d}".format(birthday_threshold(0.1,max_hashes(trunc))),"cyan"), "commits.")
+print("For this probability to reach 50%, you'd need", colored("{:d}".format(birthday_threshold(0.50,max_hashes(trunc))),"cyan"), "commits.")
