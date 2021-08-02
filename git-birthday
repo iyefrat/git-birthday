@@ -13,7 +13,7 @@ else:
 def birthday(people,days):
     """The chance of a number of people sharing a birthday
     in a year with a certian number of days."""
-    return 1- math.prod([days - i for i in range(0,people)]) / ( days ** people )
+    return 1 - math.prod([days - i for i in range(0,people)]) / ( days ** people )
 
 def birthday_threshold(threshold,days):
     """How many people you need for the collision probability
@@ -23,9 +23,9 @@ def birthday_threshold(threshold,days):
 def max_hashes(trunc):
     return 16 ** trunc
 
-commits = os.popen('git log --pretty=format:"%H %aI %s"').read().split("\n")
-hashes = [s.split()[0] for s in commits]
-dates =  [s.split()[1] for s in commits]
+commits =  os.popen('git log --pretty=format:"%H %aI %s"').read().split("\n")
+hashes  =  [s.split()[0] for s in commits]
+dates   =  [s.split()[1] for s in commits]
 subject =  [s.split(" ", 2)[2] for s in commits]
 
 trunc_hashes = [s[0:trunc] for s in hashes]
