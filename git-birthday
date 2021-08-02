@@ -18,10 +18,7 @@ def birthday(people,days):
 def birthday_threshold(threshold,days):
     """How many people you need for the collision probability
     to reach the threshold, as a fraction of 1."""
-    for i in  range(1,days):
-        if (i ** 2) - i > 2 * days * math.log(1/(1-threshold)):
-            break
-    return i
+    return int(1/2 * (1 + math.sqrt(4*(2 * days * math.log(1/(1 - threshold))) + 1)))
 
 def max_hashes(trunc):
     return 16 ** trunc
