@@ -15,9 +15,11 @@ def birthday(people,days):
     in a year with a certian number of days."""
     return 1- math.prod([days - i for i in range(0,people)]) / ( days ** people )
 
-def birthday50(days):
+def birthday_threshold(threshold,days):
+    """How many people you need for the collision probability
+    to reach the threshold, as a fraction of 1."""
     for i in  range(1,days):
-        if (i ** 2) - i > 2 * days * math.log(2):
+        if (i ** 2) - i > 2 * days * math.log(1/(1-threshold)):
             break
     return i
 
@@ -59,4 +61,6 @@ else:
     print("There are", len(dict_duplicates), "collisions in total.")
 print("The probability of a collision happening at least once is", end=" ")
 print(colored("{:.2f}%".format(birthday(len(commits),max_hashes(trunc)) * 100), "green"))
-print("For this probability to reach 50%, you'd need", birthday50(max_hashes(trunc)), "commits.")
+print("For this probability to reach 1%, you'd need",  birthday_threshold(0.01,max_hashes(trunc)), "commits.")
+print("For this probability to reach 10%, you'd need", birthday_threshold(0.1,max_hashes(trunc)), "commits.")
+print("For this probability to reach 50%, you'd need", birthday_threshold(0.5,max_hashes(trunc)), "commits.")
